@@ -7,8 +7,11 @@ from sklearn.metrics import precision_recall_fscore_support
 import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
+
+#Constantes para Calculo y cantidad de datos
 RANDOM_STATE = 50
 n = 5000
+
 np.random.seed(RANDOM_STATE)
 data = {
     "Gender": np.random.choice(['Male', 'Female'], n, p=[0.7, 0.3]),
@@ -33,7 +36,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 model = RandomForestClassifier(random_state=RANDOM_STATE)
 model.fit(X_train, y_train)
 
-joblib.dump(model, 'modelo.pkl')
+#Agrego las columnas al modelo
+joblib.dump(X.columns.tolist(), 'columnas.pkl')
 
 print("Modelo entrenado y guardado como 'modelo.pkl'")
 

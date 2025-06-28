@@ -8,6 +8,10 @@ import joblib
 model= joblib.load('modelo.pkl')
 
 def predict():
+    if gender_var.get() == "Seleccione" or education_var.get() == "Seleccione" or languages_var.get() == "Seleccione" or certifications_var.get() == "Seleccione" or entry_age.get() == "0" or entry_experience.get() == "0" or entry_age.get() == "" or entry_experience.get() == "":
+        messagebox.showerror("Error", "Por favor, complete todos los campos.")
+        return
+    
     if not(model):
         messagebox.showerror("Error", "Modelo no cargado.")
         return
@@ -50,7 +54,7 @@ def predict():
             pred = "no fue contratado"
             icon_type = "warning"
                 
-        message = f"El candidato {pred} con una probabilidad de {prob*100:.2f}%"
+        message = f"Probabilidad de contratación {prob*100:.2f}%"
         messagebox.showinfo("Resultado de Predicción", message, icon=icon_type)
 
         # Guardar el registro de la predicción para análisis posterior
@@ -67,12 +71,22 @@ def predict():
         df_log = pd.DataFrame([registro])
         df_log.to_csv('registro_predicciones.csv', mode='a', header=not pd.io.common.file_exists('registro_predicciones.csv'), index=False)
 
-    except ValueError:
-        messagebox.showerror("Error", "Por favor, ingrese valores válidos para Edad y Experiencia.")
-
     except Exception as e:
-        messagebox.showerror("Error", f"Ocurrió un error: {str(e)}")    
+        messagebox.showerror("Error", f"Ocurrió un error: {str(e)}") 
+    finally: 
+        default_values() 
+
     return
+
+def default_values():
+    gender_var.set("Seleccione")
+    education_var.set("Seleccione")
+    languages_var.set("Seleccione")
+    certifications_var.set("Seleccione")
+    entry_age.delete(0, tk.END)
+    entry_age.insert(0, 0)  # Valor por defecto de edad
+    entry_experience.delete(0, tk.END)
+    entry_experience.insert(0, 0)  # Valor por defecto de experiencia
 
 app = tk.Tk()
 app.title("Modelo de Predicción de Contratación")
@@ -88,22 +102,20 @@ entry_experience.grid(row=1, column=1, padx=5, pady=5)
 
 ttk.Label(app, text="Género:").grid(row=2, column=0, padx=5, pady=5)
 gender_var = tk.StringVar(value='Male')
-ttk.OptionMenu(app, gender_var, "Male", "Female").grid(row=2, column=1, padx=5, pady=5)
+ttk.OptionMenu(app, gender_var, "Seleccione", "Male", "Female").grid(row=2, column=1, padx=5, pady=5)
 
 ttk.Label(app, text="Educación:").grid(row=3, column=0, padx=5, pady=5)
 education_var = tk.StringVar(value='HighSchool')   
-ttk.OptionMenu(app, education_var, "HighSchool", "Bachelor", "Master").grid(row=3, column=1, padx=5, pady=5)
+ttk.OptionMenu(app, education_var, "Seleccione", "HighSchool", "Bachelor", "Master").grid(row=3, column=1, padx=5, pady=5)
 
 ttk.Label(app, text="Languages:").grid(row=4, column=0, padx=5, pady=5)
 languages_var = tk.StringVar(value='HighSchool')   
-ttk.OptionMenu(app, languages_var, "English", "French", "Eng. & Fr.").grid(row=4, column=1, padx=5, pady=5)
+ttk.OptionMenu(app, languages_var, "Seleccione", "English", "French", "Eng. & Fr.").grid(row=4, column=1, padx=5, pady=5)
 
 ttk.Label(app, text="Certifications:").grid(row=5, column=0, padx=5, pady=5)
 certifications_var = tk.StringVar(value='HighSchool')   
-ttk.OptionMenu(app, certifications_var, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10").grid(row=5, column=1, padx=5, pady=5)
-
-
+ttk.OptionMenu(app, certifications_var, "Seleccione", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10").grid(row=5, column=1, padx=5, pady=5)
 
 ttk.Button(app, text="Predecir", command=predict).grid(row=6, column=0, columnspan=2, padx=5, pady=10)
-
+default_values()
 app.mainloop()

@@ -12,42 +12,46 @@ Este proyecto utiliza un modelo de clasificación basado en RandomForest para pr
 Para evitar conflictos y mantener el entorno limpio:
 
 ```bash
-# Crear entorno virtual
-python -m venv venv
+    # Crear entorno virtual
+    python -m venv venv
 
-# Activar entorno virtual
-# En Windows:
-venv\Scripts\activate
-# En Linux/Mac:
-source venv/bin/activate
+    # Activar entorno virtual
+    # En Windows:
+    venv\Scripts\activate
+    # En Linux/Mac:
+    source venv/bin/activate
 
-# Instalar dependencias
-pip install -r requirements.txt
+    # Instalar dependencias
+    pip install -r requirements.txt
 
 ```
 # Generar Modelo
 ```bash
-python modelo.py
+    python modelo.py
 
 ```
 
 # Ejecutar la interfaz gráfica
 ```bash
-python app.py
+    python app.py
 
 ```
 
+# Generar Gráfico de importancia de Características
+```bash
+    python importancia.py
 
-
+```
 
 ## 📁 Estructura del proyecto una vez ejecutado venv y generado el modelo
 ```bash
-.
-├── app.py                 # Interfaz gráfica Tkinter
-├── modelo.py              # Entrenamiento del modelo
-├── modelo.pkl             # Modelo entrenado (generado)
-├── requirements.txt       # Dependencias
-├── .gitignore             # Archivos a excluir del control de versiones
-└── README.md              # Este archivo
+    .
+    ├── app.py                 # Interfaz gráfica Tkinter
+    ├── importancia.py         # Gráfico de peso de características
+    ├── modelo.py              # Entrenamiento del modelo
+    ├── modelo.pkl             # Modelo entrenado (generado)
+    ├── requirements.txt       # Dependencias
+    ├── .gitignore             # Archivos a excluir del control de versiones
+    └── README.md              # Este archivo
 
 ```
